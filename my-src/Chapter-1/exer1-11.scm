@@ -1,0 +1,31 @@
+(define (f n)
+  (if (< n 3)
+      n
+      (+ (f (- n 1)) (* (f (- n 2)) 2) (* (f (- n 3)) 3))))
+
+(f 1)
+(f 2)
+(f 3)
+(f 4)
+(f 5)
+(f 6)
+(f 7)
+(f 13)
+
+(define (f n)
+  (f-iter 0 1 2 n))
+
+(define (f-iter f0 f1 f2 count)
+  (cond ((= count 2) f2)
+        ((= count 1) f1)
+        ((= count 0) f0)
+        (else (f-iter f1 f2 (+ f2 (* f1 2) (* f0 3)) (- count 1)))))
+
+(f 1)
+(f 2)
+(f 3)
+(f 4)
+(f 5)
+(f 6)
+(f 7)
+(f 13)
