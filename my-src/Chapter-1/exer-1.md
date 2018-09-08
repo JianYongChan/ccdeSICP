@@ -104,7 +104,7 @@ b
 
 ``` Scheme
 ;;; procedure 1
-;;; 其计算过程是递归的
+;;; 其计算过程是线性递归的
 (+ 4 5)
 (inc (+ 3 5))
 (inc (inc (+ 2 5)))
@@ -149,7 +149,81 @@ b
 下面各个函数的数学定义：
 
 ``` Scheme
-(define (f n) (A 0 n))
-(define (g n) (A 1 n))
-(define (h n) (A 2 n))
+(define (f n) (A 0 n))  ;;; ==> 2n
+(define (g n) (A 1 n))  ;;; ==> 
+(define (h n) (A 2 n))  ;;; ==>
+```
+
+* exer1-11
+
+``` Scheme
+;;; 递归计算过程版本
+(define (f n)
+  (if (< n 3)
+      n
+      (+ (f (- n 1)) (* (f (- n 2)) 2) (* (f (- n 3)) 3))))
+
+;;; 迭代计算过程版本
+(define (f n)
+  (f-iter 0 1 2 n))
+
+(define (f-iter f0 f1 f2 count)
+  (cond ((= count 2) f2)
+        ((= count 1) f1)
+        ((= count 0) f0)
+        (else (f-iter f1 f2 (+ f2 (* f1 2) (* f0 3)) (- count 1)))))
+```
+
+* exer1-15
+
+``` Scheme
+;;; a) 5次
+(sine 12.15)
+    (p (sine 4.05))
+        (p (sine 1.35))
+            (p (sine 0.45))
+                ((p (sine 0.15)))
+                    (p (sine 0.05))
+
+;;; b) 这个问题可以这样理解：a被3除多少次才会<=0.1？
+;;; 即：a/(3^n) <= 0.1 ==> n >= log_3(10a)
+```
+* exer1-16
+
+``` Scheme
+(define (fast-expt b n)
+  (fast-expt-iter 1 b n))
+
+(define (fast-expt-iter a b n)
+  (cond ((= n 0) a)
+         ((even? n) (fast-expt-iter a (square b) (/ n 2)))
+         (else (fast-expt-iter (* a b) b (- n 1)))))
+
+(define (even? n)
+  (= (remainder n 2) 0))
+```
+
+* exer1-17
+
+``` Scheme
+(define (fast-mult a b)
+  (cond ((or (= a 0) (= b 0)) 0)
+        ((= b 1) a)
+        ((even? b) (fast-mult (* a 2) (/ b 2)))
+        (else (+ a (fast-mult a (- b 1))))))
+
+
+(define (even? b)
+  (= (remainder b 2) 0))
+
+(define (double a)
+  (* a 2))
+
+(define (halve a)
+  (/ a 2))
+```
+
+* exer1-17
+
+``` Scheme
 ```
